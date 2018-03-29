@@ -4,6 +4,8 @@ python: "2.7"
 
 before_install:
   - sudo apt-get update -qq
+  # Travis CI specific
+  - sudo pip install pexpect
 
 install:
   - pip install ansible

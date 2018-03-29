@@ -1,0 +1,35 @@
+---
+- name: Check if the SDK tools are already installed
+  stat:
+    path: "{{ install_dir }}/Sdk"
+  register: installed
+
+- name: Download the SDK tools
+  get_url:
+    url: "{{ download_url }}"
+    dest: "/tmp/{{ zip_name }}"
+    checksum: "{{ sdk_checksum }}"
+  when: not installed.stat.exists or force is defined
+
+- name: Ensure install directory exists
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+  when: not installed.stat.exists or force is defined
+
+- name: Extract the SDK tools
+  unarchive:
+    src: "/tmp/{{ zip_name }}"
+    dest: "{{ install_dir }}"
+    creates: "{{ install_dir }}/Sdk"
+  when: not installed.stat.exists or force is defined
+
+- name: Add SDK tools to PATH
+  blockinfile:
+    marker: "# {mark} Android SDK tools Environment"
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    content: |
+      export PATH=$PATH:{{ install_dir }}/Sdk/platform-tools
+    backup: yes
+
+# TODO Maybe add platform tools via sdkmanager

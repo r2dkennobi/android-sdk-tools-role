@@ -3,6 +3,8 @@ android-sdk-tools
 
 Just another Android SDK tools role
 
+Also installs "platform-tools" and "tools" using `sdkmanager`
+
 Role Variables
 --------------
 

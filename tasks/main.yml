@@ -1,4 +1,9 @@
 ---
+- name: Install pre-requisites for the task
+  pip:
+    name: "pexpect==4.0.1"
+    state: present
+
 - name: Check if the SDK tools are already installed
   stat:
     path: "{{ install_dir }}"

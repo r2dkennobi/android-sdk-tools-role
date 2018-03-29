@@ -1,6 +1,6 @@
 ---
 # defaults file for android-sdk-tools
-install_dir: "{{ ansible_env.HOME }}/.android"
+install_dir: "{{ ansible_env.HOME }}/.android/Sdk"
 build_version: "3859397"
 sdk_checksum: "sha256:444e22ce8ca0f67353bda4b85175ed3731cae3ffa695ca18119cbacef1c1bea0"
 zip_name: "sdk-tools-linux-{{ build_version }}.zip"

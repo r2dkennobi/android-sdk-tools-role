@@ -4,6 +4,8 @@ python: "2.7"
 
 before_install:
   - sudo apt-get update -qq
+  # Travis CI specific
+  - sudo pip install pexpect
 
 install:
   - pip install ansible
@@ -13,4 +15,6 @@ script:
   - "ansible-playbook -i tests/inventory tests/test.yml --syntax-check"
   - "ansible-playbook -i tests/inventory tests/test.yml --connection=local"
   - source ~/.bashrc
+  - which sdkmanager
   - which adb
+  - which fastboot

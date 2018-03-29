@@ -1,7 +1,12 @@
 ---
+- name: Install pre-requisites for the task
+  pip:
+    name: "pexpect==4.0.1"
+    state: present
+
 - name: Check if the SDK tools are already installed
   stat:
-    path: "{{ install_dir }}/Sdk"
+    path: "{{ install_dir }}"
   register: installed
 
 - name: Download the SDK tools
@@ -21,7 +26,7 @@
   unarchive:
     src: "/tmp/{{ zip_name }}"
     dest: "{{ install_dir }}"
-    creates: "{{ install_dir }}/Sdk"
+    creates: "{{ install_dir }}/tools"
   when: not installed.stat.exists or force is defined
 
 - name: Add SDK tools to PATH
@@ -29,7 +34,22 @@
     marker: "# {mark} Android SDK tools Environment"
     dest: "{{ ansible_env.HOME }}/.bashrc"
     content: |
-      export PATH=$PATH:{{ install_dir }}/Sdk/platform-tools
+      export ANDROID_SDK_ROOT={{ install_dir }}
+      export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
+      export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
     backup: yes
+  when: not installed.stat.exists or force is defined
 
-# TODO Maybe add platform tools via sdkmanager
+- name: Accept SDK licences
+  expect:
+    command: "{{ install_dir }}/tools/bin/sdkmanager --licenses"
+    responses:
+      'y/N': 'y'
+  when: not installed.stat.exists or force is defined
+
+- name: Install platform-tools and tools using sdkmanager
+  expect:
+    command: "{{ install_dir }}/tools/bin/sdkmanager 'platform-tools' 'tools'"
+    responses:
+      'y/N': 'y'
+  when: not installed.stat.exists or force is defined

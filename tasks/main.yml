@@ -3,6 +3,7 @@
   pip:
     name: "pexpect==4.0.1"
     state: present
+    virtualenv_site_packages: "{{ is_virtualenv }}"
 
 - name: Check if the SDK tools are already installed
   stat:

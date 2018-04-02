@@ -1,5 +1,8 @@
 ---
 - hosts: localhost
   remote_user: root
-  roles:
-    - android-sdk-tools
+  vars:
+    is_virtualenv: yes
+  tasks:
+    - include_role:
+        name: android-sdk-tools-role

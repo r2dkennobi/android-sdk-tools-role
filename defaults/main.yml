@@ -1,5 +1,6 @@
 ---
 # defaults file for android-sdk-tools
+is_virtualenv: no
 install_dir: "{{ ansible_env.HOME }}/.android/Sdk"
 build_version: "3859397"
 sdk_checksum: "sha256:444e22ce8ca0f67353bda4b85175ed3731cae3ffa695ca18119cbacef1c1bea0"

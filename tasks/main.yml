@@ -36,10 +36,10 @@
     dest: "{{ ansible_env.HOME }}/.bashrc"
     content: |
       export ANDROID_SDK_ROOT={{ install_dir }}
+      export NDK_PATH=$ANDROID_SDK_ROOT/ndk-bundle
       export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
       export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
     backup: yes
-  when: not installed.stat.exists or force is defined
 
 - name: Accept SDK licences
   expect:
@@ -50,7 +50,6 @@
 
 - name: Install platform-tools and tools using sdkmanager
   expect:
-    command: "{{ install_dir }}/tools/bin/sdkmanager 'platform-tools' 'tools'"
+    command: "{{ install_dir }}/tools/bin/sdkmanager 'platform-tools' 'tools' 'platforms;android-27' 'build-tools;27.0.3' 'ndk-bundle'"
     responses:
       'y/N': 'y'
-  when: not installed.stat.exists or force is defined

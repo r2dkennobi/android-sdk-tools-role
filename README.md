@@ -5,7 +5,7 @@ Just another Android SDK tools role
 
 Also installs "platform-tools" and "tools" using `sdkmanager`
 
-![Build Status](https://travis-ci.org/r2dkennobi/android-sdk-tools.svg?branch=master)
+![Build Status](https://travis-ci.org/r2dkennobi/android-sdk-tools-role.svg?branch=master)
 
 Role Variables
 --------------
@@ -18,6 +18,15 @@ Example Playbook
     - hosts: servers
       roles:
          - { role: r2dkennobi.android-sdk-tools }
+
+or to run locally
+
+    $ ansible-playbook -i tests/inventory tests/test.yml --connection=local
+
+Note: Assumes `ansible.cfg` exists in the root of the repo with the following content:
+
+    [defaults]
+    roles_path = ../
 
 License
 -------

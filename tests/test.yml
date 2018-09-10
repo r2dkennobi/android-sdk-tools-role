@@ -3,6 +3,8 @@
   remote_user: root
   vars:
     is_virtualenv: yes
+    ci: true
+    install_pkgs: "'platform-tools' 'tools' 'build-tools;28.0.2'"
   tasks:
     - include_role:
         name: android-sdk-tools-role

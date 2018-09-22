@@ -7,7 +7,7 @@
 
 - name: Check if the SDK tools are already installed
   stat:
-    path: "{{ install_dir }}"
+    path: "{{ android_sdk_dir }}"
   register: installed
 
 - name: Download the SDK tools
@@ -19,15 +19,15 @@
 
 - name: Ensure install directory exists
   file:
-    path: "{{ install_dir }}"
+    path: "{{ android_sdk_dir }}"
     state: directory
   when: not installed.stat.exists or force is defined
 
 - name: Extract the SDK tools
   unarchive:
     src: "/tmp/{{ zip_name }}"
-    dest: "{{ install_dir }}"
-    creates: "{{ install_dir }}/tools"
+    dest: "{{ android_sdk_dir }}"
+    creates: "{{ android_sdk_dir }}/tools"
   when: not installed.stat.exists or force is defined
 
 - name: Add SDK tools to PATH
@@ -35,7 +35,7 @@
     marker: "# {mark} Android SDK tools Environment"
     dest: "{{ ansible_env.HOME }}/.bashrc"
     content: |
-      export ANDROID_SDK_ROOT={{ install_dir }}
+      export ANDROID_SDK_ROOT={{ android_sdk_dir }}
       export NDK_PATH=$ANDROID_SDK_ROOT/ndk-bundle
       export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
       export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
@@ -43,13 +43,13 @@
 
 - name: Accept SDK licences
   expect:
-    command: "{{ install_dir }}/tools/bin/sdkmanager --licenses"
+    command: "{{ android_sdk_dir }}/tools/bin/sdkmanager --licenses"
     responses:
       'y/N': 'y'
   when: not installed.stat.exists or force is defined
 
 - name: Install platform-tools and tools using sdkmanager
   expect:
-    command: "{{ install_dir }}/tools/bin/sdkmanager {{ install_pkgs }}"
+    command: "{{ android_sdk_dir }}/tools/bin/sdkmanager {{ install_pkgs }}"
     responses:
       'y/N': 'y'

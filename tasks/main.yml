@@ -7,7 +7,7 @@
 
 - name: Check if the SDK tools are already installed
   stat:
-    path: "{{ android_sdk_dir }}"
+    path: "{{ android_sdk_dir }}/platform-tools/adb"
   register: installed
 
 - name: Download the SDK tools
@@ -28,12 +28,13 @@
     src: "/tmp/{{ zip_name }}"
     dest: "{{ android_sdk_dir }}"
     creates: "{{ android_sdk_dir }}/tools"
+    remote_src: "{{ remote_src }}"
   when: not installed.stat.exists or force is defined
 
 - name: Add SDK tools to PATH
   blockinfile:
     marker: "# {mark} Android SDK tools Environment"
-    dest: "{{ ansible_env.HOME }}/.bashrc"
+    dest: "{{ bashrc_location }}"
     content: |
       export ANDROID_SDK_ROOT={{ android_sdk_dir }}
       export NDK_PATH=$ANDROID_SDK_ROOT/ndk-bundle

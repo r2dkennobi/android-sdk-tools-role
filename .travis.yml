@@ -16,5 +16,3 @@ script:
   - "ansible-playbook -i tests/inventory tests/test.yml --connection=local"
   - source ~/.bashrc
   - which sdkmanager
-  - which adb
-  - which fastboot
